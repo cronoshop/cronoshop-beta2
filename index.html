@@ -24,1512 +24,407 @@
     <!-- Styles -->
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
-    <style>
-        /* iOS Design System Variables */
-        :root {
-            /* Colors - iOS Dynamic */
-            --ios-blue: #007AFF;
-            --ios-green: #34C759;
-            --ios-red: #FF3B30;
-            --ios-orange: #FF9500;
-            --ios-purple: #AF52DE;
-            --ios-pink: #FF2D92;
-            --ios-yellow: #FFCC00;
-            
-            /* Backgrounds */
-            --bg-primary: #F2F2F7;
-            --bg-secondary: #FFFFFF;
-            --bg-tertiary: #F2F2F7;
-            --bg-grouped: #F2F2F7;
-            
-            /* Text Colors */
-            --text-primary: #000000;
-            --text-secondary: #3C3C43;
-            --text-tertiary: #3C3C4399;
-            --text-quaternary: #3C3C4366;
-            
-            /* Fills */
-            --fill-primary: #78788033;
-            --fill-secondary: #78788028;
-            --fill-tertiary: #7676801E;
-            --fill-quaternary: #74748014;
-            
-            /* Separators */
-            --separator-opaque: #C6C6C8;
-            --separator-non-opaque: #3C3C4349;
-            
-            /* Shadows */
-            --shadow-1: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-2: 0 4px 12px rgba(0,0,0,0.15);
-            --shadow-3: 0 8px 25px rgba(0,0,0,0.15);
-            
-            /* Blur */
-            --blur-material: blur(20px) saturate(180%);
-            
-            /* Spacing */
-            --spacing-1: 4px;
-            --spacing-2: 8px;
-            --spacing-3: 12px;
-            --spacing-4: 16px;
-            --spacing-5: 20px;
-            --spacing-6: 24px;
-            --spacing-8: 32px;
-            --spacing-10: 40px;
-            --spacing-12: 48px;
-            --spacing-16: 64px;
-            
-            /* Border Radius */
-            --radius-small: 8px;
-            --radius-medium: 12px;
-            --radius-large: 16px;
-            --radius-xl: 20px;
-            --radius-2xl: 24px;
-            --radius-full: 9999px;
-            
-            /* Typography */
-            --font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-            
-            /* Transitions */
-            --transition-fast: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            --transition-smooth: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --ios-blue: #0A84FF;
-                --ios-green: #30D158;
-                --ios-red: #FF453A;
-                --ios-orange: #FF9F0A;
-                --ios-purple: #BF5AF2;
-                --ios-pink: #FF375F;
-                --ios-yellow: #FFD60A;
-                
-                --bg-primary: #000000;
-                --bg-secondary: #1C1C1E;
-                --bg-tertiary: #2C2C2E;
-                --bg-grouped: #000000;
-                
-                --text-primary: #FFFFFF;
-                --text-secondary: #EBEBF5;
-                --text-tertiary: #EBEBF599;
-                --text-quaternary: #EBEBF566;
-                
-                --fill-primary: #78788066;
-                --fill-secondary: #78788052;
-                --fill-tertiary: #7676803D;
-                --fill-quaternary: #74748029;
-                
-                --separator-opaque: #38383A;
-                --separator-non-opaque: #54545899;
-            }
-        }
-        
-        .dark-mode {
-            --ios-blue: #0A84FF;
-            --ios-green: #30D158;
-            --ios-red: #FF453A;
-            --ios-orange: #FF9F0A;
-            --ios-purple: #BF5AF2;
-            --ios-pink: #FF375F;
-            --ios-yellow: #FFD60A;
-            
-            --bg-primary: #000000;
-            --bg-secondary: #1C1C1E;
-            --bg-tertiary: #2C2C2E;
-            --bg-grouped: #000000;
-            
-            --text-primary: #FFFFFF;
-            --text-secondary: #EBEBF5;
-            --text-tertiary: #EBEBF599;
-            --text-quaternary: #EBEBF566;
-            
-            --fill-primary: #78788066;
-            --fill-secondary: #78788052;
-            --fill-tertiary: #7676803D;
-            --fill-quaternary: #74748029;
-            
-            --separator-opaque: #38383A;
-            --separator-non-opaque: #54545899;
-        }
-        
-        /* Reset & Base */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: var(--font-system);
-            background-color: var(--bg-grouped);
-            color: var(--text-primary);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
-        }
-        
-        /* Navigation Bar - iOS Style */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 88px;
-            background: rgba(242, 242, 247, 0.8);
-            backdrop-filter: var(--blur-material);
-            -webkit-backdrop-filter: var(--blur-material);
-            border-bottom: 0.5px solid var(--separator-non-opaque);
-            z-index: 1000;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 var(--spacing-4) var(--spacing-3);
-            transition: all var(--transition-fast);
-        }
-        
-        .dark-mode .navbar {
-            background: rgba(28, 28, 30, 0.8);
-        }
-        
-        .nav-content {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-2);
-            text-decoration: none;
-            color: var(--text-primary);
-        }
-        
-        .nav-logo img {
-            width: 32px;
-            height: 32px;
-            border-radius: var(--radius-small);
-        }
-        
-        .nav-logo-text {
-            font-size: 20px;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-        
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-2);
-        }
-        
-        .nav-button {
-            width: 36px;
-            height: 36px;
-            border-radius: var(--radius-full);
-            background: var(--fill-tertiary);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            color: var(--text-primary);
-            font-size: 18px;
-        }
-        
-        .nav-button:hover {
-            background: var(--fill-secondary);
-            transform: scale(1.05);
-        }
-        
-        .nav-button:active {
-            transform: scale(0.95);
-        }
-        
-        /* Hero Section with Gradient */
-        .hero {
-            margin-top: 88px;
-            min-height: 70vh;
-            background: linear-gradient(135deg, var(--ios-purple) 0%, var(--ios-pink) 50%, var(--ios-orange) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            padding: 0 var(--spacing-4);
-        }
-        
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-2);
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: var(--spacing-2) var(--spacing-4);
-            border-radius: var(--radius-full);
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: var(--spacing-6);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .hero-title {
-            font-size: clamp(2.5rem, 6vw, 4rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: var(--spacing-4);
-            letter-spacing: -2px;
-        }
-        
-        .hero-subtitle {
-            font-size: 20px;
-            font-weight: 400;
-            opacity: 0.9;
-            margin-bottom: var(--spacing-8);
-            line-height: 1.4;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: var(--spacing-4);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        /* iOS Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-2);
-            padding: var(--spacing-4) var(--spacing-6);
-            border-radius: var(--radius-large);
-            font-family: var(--font-system);
-            font-size: 16px;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            min-height: 50px;
-        }
-        
-        .btn-primary {
-            background: rgba(255,255,255,0.9);
-            color: var(--ios-purple);
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-primary:hover {
-            background: rgba(255,255,255,1);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-2);
-        }
-        
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-        
-        /* Cards Section */
-        .section {
-            padding: var(--spacing-16) var(--spacing-4);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: var(--spacing-12);
-        }
-        
-        .section-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: var(--spacing-3);
-            letter-spacing: -1px;
-        }
-        
-        .section-subtitle {
-            font-size: 18px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        /* Product Cards Grid */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-6);
-            margin-bottom: var(--spacing-8);
-        }
-        
-        .product-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-2xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-1);
-            transition: all var(--transition-smooth);
-            border: 1px solid var(--separator-non-opaque);
-        }
-        
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-3);
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: var(--fill-tertiary);
-        }
-        
-        .product-info {
-            padding: var(--spacing-4);
-        }
-        
-        .product-category {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--ios-blue);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: var(--spacing-2);
-        }
-        
-        .product-title {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.3;
-            margin-bottom: var(--spacing-3);
-            color: var(--text-primary);
-        }
-        
-        .product-price {
-            display: flex;
-            align-items: baseline;
-            gap: var(--spacing-2);
-            margin-bottom: var(--spacing-4);
-        }
-        
-        .price-current {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--ios-green);
-        }
-        
-        .price-original {
-            font-size: 14px;
-            color: var(--text-tertiary);
-            text-decoration: line-through;
-        }
-        
-        .discount-badge {
-            background: var(--ios-red);
-            color: white;
-            padding: 2px var(--spacing-2);
-            border-radius: var(--radius-small);
-            font-size: 12px;
-            font-weight: 600;
-        }
-        
-        .product-actions {
-            display: flex;
-            gap: var(--spacing-2);
-        }
-        
-        .btn-card {
-            flex: 1;
-            padding: var(--spacing-3) var(--spacing-4);
-            font-size: 14px;
-            min-height: 44px;
-        }
-        
-        .btn-blue {
-            background: var(--ios-blue);
-            color: white;
-        }
-        
-        .btn-blue:hover {
-            background: color-mix(in srgb, var(--ios-blue) 90%, black);
-            transform: translateY(-1px);
-        }
-        
-        .btn-gray {
-            background: var(--fill-secondary);
-            color: var(--text-primary);
-        }
-        
-        .btn-gray:hover {
-            background: var(--fill-primary);
-        }
-        
-        /* Quick Actions */
-        .quick-actions {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-2xl);
-            padding: var(--spacing-6);
-            margin-bottom: var(--spacing-8);
-            border: 1px solid var(--separator-non-opaque);
-        }
-        
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-4);
-        }
-        
-        .action-item {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-4);
-            padding: var(--spacing-4);
-            background: var(--fill-tertiary);
-            border-radius: var(--radius-large);
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all var(--transition-fast);
-        }
-        
-        .action-item:hover {
-            background: var(--fill-secondary);
-            transform: translateY(-2px);
-        }
-        
-        .action-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: var(--radius-medium);
-            background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-        }
-        
-        .action-content h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        
-        .action-content p {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        /* Footer */
-        .footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--separator-non-opaque);
-            padding: var(--spacing-12) var(--spacing-4);
-            margin-top: var(--spacing-16);
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-2);
-            margin-bottom: var(--spacing-4);
-        }
-        
-        .footer-text {
-            color: var(--text-secondary);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-logo-text {
-                display: none;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 280px;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .actions-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-        
-        /* Icons */
-        .icon {
-            width: 1em;
-            height: 1em;
-            display: inline-block;
-        }
-
-        /* Custom CSS */
-        :root {
-            --font-primary: 'SF Pro Display', sans-serif;
-            --font-secondary: 'SF Pro Text', sans-serif;
-
-            --text-xs: 0.75rem;
-            --text-sm: 0.875rem;
-            --text-base: 1rem;
-            --text-lg: 1.125rem;
-            --text-xl: 1.25rem;
-            --text-2xl: 1.5rem;
-            --text-3xl: 1.875rem;
-            --text-4xl: 2.25rem;
-            --text-5xl: 3rem;
-            --text-6xl: 3.75rem;
-
-            --font-thin: 100;
-            --font-extralight: 200;
-            --font-light: 300;
-            --font-normal: 400;
-            --font-medium: 500;
-            --font-semibold: 600;
-            --font-bold: 700;
-            --font-extrabold: 800;
-            --font-black: 900;
-
-            --space-1: 0.25rem;
-            --space-2: 0.5rem;
-            --space-3: 0.75rem;
-            --space-4: 1rem;
-            --space-5: 1.25rem;
-            --space-6: 1.5rem;
-            --space-8: 2rem;
-            --space-10: 2.5rem;
-            --space-12: 3rem;
-            --space-16: 4rem;
-            --space-20: 5rem;
-            --space-24: 6rem;
-            --space-32: 8rem;
-
-            --radius-none: 0;
-            --radius-sm: 0.125rem;
-            --radius-md: 0.375rem;
-            --radius-lg: 0.5rem;
-            --radius-xl: 0.75rem;
-            --radius-2xl: 1rem;
-            --radius-3xl: 1.5rem;
-            --radius-full: 9999px;
-
-            --transition-fast: 0.2s ease-in-out;
-            --transition-normal: 0.3s ease-in-out;
-            --transition-slow: 0.4s ease-in-out;
-
-            --blur-thin: blur(5px);
-            --blur-normal: blur(10px);
-            --blur-thick: blur(20px);
-        }
-
-        body {
-            font-family: var(--font-primary);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 var(--space-4);
-        }
-
-        .section {
-            padding: var(--space-16) 0;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: var(--space-12);
-        }
-
-        .section-title {
-            font-size: var(--text-3xl);
-            font-weight: var(--font-bold);
-            margin-bottom: var(--space-3);
-            letter-spacing: -1px;
-        }
-
-        .section-subtitle {
-            font-size: var(--text-lg);
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .grid {
-            display: grid;
-        }
-
-        .grid-cols-2 {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .grid-cols-3 {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .grid-cols-4 {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-        }
-
-        .grid-auto-fit {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        }
-
-        .card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-2xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-1);
-            transition: all var(--transition-fast);
-            border: 1px solid var(--separator-non-opaque);
-            padding: var(--space-6);
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-2);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--space-2);
-            padding: var(--space-3) var(--space-6);
-            border-radius: var(--radius-lg);
-            font-family: var(--font-primary);
-            font-size: var(--text-base);
-            font-weight: var(--font-semibold);
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            min-height: 44px;
-        }
-
-        .btn-primary {
-            background: var(--ios-blue);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: color-mix(in srgb, var(--ios-blue) 90%, black);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: var(--fill-secondary);
-            color: var(--text-primary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--fill-primary);
-        }
-
-        .btn-success {
-            background: var(--ios-green);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: color-mix(in srgb, var(--ios-green) 90%, black);
-            transform: translateY(-1px);
-        }
-
-        .btn-sm {
-            padding: var(--space-2) var(--space-4);
-            font-size: var(--text-sm);
-            min-height: 36px;
-        }
-
-        .btn-lg {
-            padding: var(--space-4) var(--space-8);
-            font-size: var(--text-lg);
-            min-height: 52px;
-        }
-
-        .hero {
-            margin-top: 0px;
-            min-height: 70vh;
-            background: linear-gradient(135deg, var(--ios-purple) 0%, var(--ios-pink) 50%, var(--ios-orange) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            padding: var(--space-16) 0;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                        radial-gradient(circle at 70% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            padding: 0 var(--space-4);
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: var(--space-2);
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            padding: var(--space-2) var(--space-4);
-            border-radius: var(--radius-full);
-            font-size: var(--text-sm);
-            font-weight: var(--font-medium);
-            margin-bottom: var(--space-6);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .hero-title {
-            font-size: var(--text-5xl);
-            font-weight: var(--font-bold);
-            line-height: 1.1;
-            margin-bottom: var(--space-4);
-            letter-spacing: -2px;
-        }
-
-        .hero-subtitle {
-            font-size: var(--text-lg);
-            font-weight: var(--font-normal);
-            opacity: 0.9;
-            margin-bottom: var(--space-8);
-            line-height: 1.4;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: var(--space-4);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .product-card {
-            background: var(--bg-secondary);
-            border-radius: var(--radius-2xl);
-            overflow: hidden;
-            box-shadow: var(--shadow-1);
-            transition: all var(--transition-fast);
-            border: 1px solid var(--separator-non-opaque);
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-2);
-        }
-
-        .product-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: var(--fill-tertiary);
-        }
-
-        .product-info {
-            padding: var(--space-4);
-        }
-
-        .product-category {
-            font-size: var(--text-xs);
-            font-weight: var(--font-semibold);
-            color: var(--ios-blue);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: var(--space-2);
-        }
-
-        .product-title {
-            font-size: var(--text-base);
-            font-weight: var(--font-semibold);
-            line-height: 1.3;
-            margin-bottom: var(--space-3);
-            color: var(--text-primary);
-        }
-
-        .product-price {
-            display: flex;
-            align-items: baseline;
-            gap: var(--space-2);
-            margin-bottom: var(--space-4);
-        }
-
-        .price-current {
-            font-size: var(--text-xl);
-            font-weight: var(--font-bold);
-            color: var(--ios-green);
-        }
-
-        .price-original {
-            font-size: var(--text-sm);
-            color: var(--text-tertiary);
-            text-decoration: line-through;
-        }
-
-        .discount-badge {
-            background: var(--ios-red);
-            color: white;
-            padding: 2px var(--space-2);
-            border-radius: var(--radius-sm);
-            font-size: var(--text-xs);
-            font-weight: var(--font-semibold);
-        }
-
-        .product-actions {
-            display: flex;
-            gap: var(--space-2);
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-left {
-            text-align: left;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .items-center {
-            align-items: center;
-        }
-
-        .flex {
-            display: flex;
-        }
-
-        .gap-4 {
-            gap: var(--space-4);
-        }
-
-        .p-4 {
-            padding: var(--space-4);
-        }
-
-        .rounded-lg {
-            border-radius: var(--radius-lg);
-        }
-
-        .bg-tertiary {
-            background: var(--bg-tertiary);
-        }
-
-        .text-decoration-none {
-            text-decoration: none;
-        }
-
-        .footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--separator-non-opaque);
-            padding: var(--space-12) 0;
-            margin-top: var(--space-16);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: var(--space-8);
-        }
-
-        .footer-section {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .footer-section h4 {
-            font-size: var(--text-lg);
-            font-weight: var(--font-semibold);
-            margin-bottom: var(--space-4);
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-section li {
-            margin-bottom: var(--space-2);
-        }
-
-        .footer-section a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color var(--transition-fast);
-        }
-
-        .footer-section a:hover {
-            color: var(--text-primary);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            margin-top: var(--space-8);
-            padding-top: var(--space-4);
-            border-top: 1px solid var(--separator-non-opaque);
-            color: var(--text-secondary);
-            font-size: var(--text-sm);
-        }
-
-        .filter-chips {
-            display: flex;
-            gap: var(--space-3);
-            flex-wrap: wrap;
-        }
-
-        .filter-chip {
-            background: var(--fill-tertiary);
-            color: var(--text-primary);
-            border: none;
-            padding: var(--space-2) var(--space-4);
-            border-radius: var(--radius-full);
-            font-size: var(--text-sm);
-            font-weight: var(--font-medium);
-            cursor: pointer;
-            transition: all var(--transition-fast);
-        }
-
-        .filter-chip:hover {
-            background: var(--fill-secondary);
-            transform: translateY(-2px);
-        }
-
-        .filter-chip.active {
-            background: var(--ios-blue);
-            color: white;
-        }
-
-        .notification {
-            position: fixed;
-            top: var(--space-8);
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: var(--space-3) var(--space-6);
-            border-radius: var(--radius-lg);
-            z-index: 1000;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            display: flex;
-            align-items: center;
-            gap: var(--space-3);
-        }
-
-        .notification.show {
-            opacity: 1;
-        }
-
-        .notification-icon {
-            font-size: var(--text-xl);
-        }
-
-        /* Animations */
-        .animate-fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Phosphor Icons */
-        @import url("https://unpkg.com/@phosphor-icons/web@2.0.3/src/bold/style.css");
-    </style>
 </head>
 <body>
-    <!-- Navigation will be loaded here -->
-    <div id="navigation-placeholder"></div>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge animate-fade-in">
-                <i class="ph ph-fire"></i>
-                <span>Oltre 2.500 utenti attivi</span>
-            </div>
-            <h1 class="hero-title animate-fade-in-up">
-                Le Migliori <span style="background: linear-gradient(45deg, #FF2D92, #FFCC00); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Offerte Amazon</span> del 2025
-            </h1>
-            <p class="hero-subtitle animate-fade-in-up">
-                Selezione quotidiana dei migliori prodotti con <strong>sconti reali fino al 70%</strong>. 
-                Risparmia tempo e denaro con la nuova esperienza iOS di Cronoshop.
-            </p>
-            <div class="hero-actions animate-fade-in-up">
-                <a href="#offerte-oggi" class="btn btn-lg hero-btn-primary">
-                    <i class="ph ph-shopping-bag"></i>
-                    Scopri le Offerte
-                </a>
-                <a href="cronoai.html" class="btn btn-lg hero-btn-secondary">
-                    <i class="ph ph-sparkle"></i>
-                    Prova CronoAI
+    <!-- iOS Navigation Bar -->
+    <nav class="ios-navbar">
+        <div class="ios-navbar-content">
+            <div class="ios-navbar-left">
+                <a href="index.html" class="ios-logo">
+                    <img src="assets/cronoshop-logo.png" alt="Cronoshop" class="ios-logo-image">
+                    <span class="ios-logo-text">Cronoshop</span>
                 </a>
             </div>
-            <div class="hero-stats" style="display: flex; justify-content: center; gap: var(--space-8); margin-top: var(--space-8); flex-wrap: wrap;">
-                <div class="stat-item" style="text-align: center;">
-                    <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); margin-bottom: var(--space-1);">2.5K+</div>
-                    <div style="font-size: var(--text-sm); opacity: 0.8;">Utenti Attivi</div>
+            
+            <div class="ios-navbar-center">
+                <div class="ios-search-container" id="searchContainer">
+                    <div class="ios-search-bar">
+                        <i class="ph ph-magnifying-glass"></i>
+                        <input type="text" placeholder="Cerca prodotti..." id="searchInput">
+                        <button class="ios-search-cancel" id="searchCancel">Annulla</button>
+                    </div>
                 </div>
-                <div class="stat-item" style="text-align: center;">
-                    <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); margin-bottom: var(--space-1);">50+</div>
-                    <div style="font-size: var(--text-sm); opacity: 0.8;">Offerte/Giorno</div>
-                </div>
-                <div class="stat-item" style="text-align: center;">
-                    <div style="font-size: var(--text-3xl); font-weight: var(--font-bold); margin-bottom: var(--space-1);">70%</div>
-                    <div style="font-size: var(--text-sm); opacity: 0.8;">Sconto Max</div>
-                </div>
+            </div>
+            
+            <div class="ios-navbar-right">
+                <button class="ios-nav-action" id="searchToggle">
+                    <i class="ph ph-magnifying-glass"></i>
+                </button>
+                <button class="ios-nav-action" id="themeToggle">
+                    <i class="ph ph-moon"></i>
+                </button>
+                <a href="cart.html" class="ios-nav-action">
+                    <i class="ph ph-shopping-cart"></i>
+                    <span class="ios-badge" id="cartBadge">0</span>
+                </a>
+                <button class="ios-nav-action ios-menu-toggle" id="menuToggle">
+                    <i class="ph ph-list"></i>
+                </button>
             </div>
         </div>
-    </section>
+    </nav>
 
-    <!-- Quick Actions -->
-    <section class="section">
-        <div class="container">
-            <div class="card" style="padding: var(--space-8);">
-                <div class="grid grid-auto-fit" style="gap: var(--space-4);">
-                    <a href="products.html?category=smartphone" class="flex items-center gap-4 p-4 rounded-lg bg-tertiary text-decoration-none" style="background: var(--fill-tertiary); border-radius: var(--radius-lg); transition: all var(--transition-fast);" onmouseover="this.style.background='var(--fill-secondary)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--fill-tertiary)'; this.style.transform='translateY(0)'">
-                        <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+    <!-- iOS Mobile Menu -->
+    <div class="ios-mobile-menu" id="mobileMenu">
+        <div class="ios-mobile-menu-header">
+            <h3>Menu</h3>
+            <button class="ios-close-btn" id="closeMenu">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <div class="ios-mobile-menu-content">
+            <a href="index.html" class="ios-menu-item active">
+                <i class="ph ph-house"></i>
+                <span>Home</span>
+            </a>
+            <a href="products.html" class="ios-menu-item">
+                <i class="ph ph-package"></i>
+                <span>Prodotti</span>
+            </a>
+            <a href="categorie.html" class="ios-menu-item">
+                <i class="ph ph-folders"></i>
+                <span>Categorie</span>
+            </a>
+            <a href="cronoai.html" class="ios-menu-item">
+                <i class="ph ph-robot"></i>
+                <span>CronoAI</span>
+            </a>
+            <a href="blog.html" class="ios-menu-item">
+                <i class="ph ph-article"></i>
+                <span>Blog</span>
+            </a>
+            <a href="wishlist.html" class="ios-menu-item">
+                <i class="ph ph-heart"></i>
+                <span>Wishlist</span>
+            </a>
+            <a href="account.html" class="ios-menu-item">
+                <i class="ph ph-user"></i>
+                <span>Account</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- iOS Overlay -->
+    <div class="ios-overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <main class="ios-main">
+        <!-- Hero Section -->
+        <section class="ios-hero">
+            <div class="ios-hero-content">
+                <div class="ios-hero-badge">
+                    <i class="ph ph-fire"></i>
+                    <span>Oltre 2.500 utenti attivi</span>
+                </div>
+                <h1 class="ios-hero-title">
+                    Le Migliori <span class="ios-gradient-text">Offerte Amazon</span> del 2025
+                </h1>
+                <p class="ios-hero-description">
+                    Selezione quotidiana dei migliori prodotti con <strong>sconti reali fino al 70%</strong>. 
+                    Risparmia tempo e denaro con la nuova esperienza iOS di Cronoshop.
+                </p>
+                <div class="ios-hero-actions">
+                    <button class="ios-btn ios-btn-primary" onclick="scrollToOffers()">
+                        <i class="ph ph-shopping-bag"></i>
+                        Scopri le Offerte
+                    </button>
+                    <a href="cronoai.html" class="ios-btn ios-btn-secondary">
+                        <i class="ph ph-robot"></i>
+                        Prova CronoAI
+                    </a>
+                </div>
+                <div class="ios-hero-stats">
+                    <div class="ios-stat-item">
+                        <span class="ios-stat-number">2.5K+</span>
+                        <span class="ios-stat-label">Utenti Attivi</span>
+                    </div>
+                    <div class="ios-stat-item">
+                        <span class="ios-stat-number">50+</span>
+                        <span class="ios-stat-label">Offerte/Giorno</span>
+                    </div>
+                    <div class="ios-stat-item">
+                        <span class="ios-stat-number">70%</span>
+                        <span class="ios-stat-label">Sconto Max</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Categories -->
+        <section class="ios-section">
+            <div class="ios-container">
+                <div class="ios-section-header">
+                    <h2>Categorie Popolari</h2>
+                    <button class="ios-text-btn" onclick="location.href='categorie.html'">Vedi Tutte</button>
+                </div>
+                <div class="ios-categories-grid">
+                    <a href="products.html?category=smartphone" class="ios-category-card">
+                        <div class="ios-category-icon" style="background: linear-gradient(135deg, #007AFF, #5856D6);">
                             <i class="ph ph-device-mobile"></i>
                         </div>
-                        <div>
-                            <h3 style="font-size: var(--text-base); font-weight: var(--font-semibold); margin-bottom: 2px; color: var(--text-primary);">Smartphone</h3>
-                            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0;">24 offerte disponibili</p>
-                        </div>
+                        <h3>Smartphone</h3>
+                        <p>24 offerte</p>
                     </a>
-                    
-                    <a href="products.html?category=tech" class="flex items-center gap-4 p-4 rounded-lg bg-tertiary text-decoration-none" style="background: var(--fill-tertiary); border-radius: var(--radius-lg); transition: all var(--transition-fast);" onmouseover="this.style.background='var(--fill-secondary)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--fill-tertiary)'; this.style.transform='translateY(0)'">
-                        <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--ios-green), var(--ios-teal)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                    <a href="products.html?category=tech" class="ios-category-card">
+                        <div class="ios-category-icon" style="background: linear-gradient(135deg, #34C759, #00C7BE);">
                             <i class="ph ph-laptop"></i>
                         </div>
-                        <div>
-                            <h3 style="font-size: var(--text-base); font-weight: var(--font-semibold); margin-bottom: 2px; color: var(--text-primary);">Tecnologia</h3>
-                            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0;">18 offerte disponibili</p>
-                        </div>
+                        <h3>Tecnologia</h3>
+                        <p>18 offerte</p>
                     </a>
-                    
-                    <a href="products.html?category=casa" class="flex items-center gap-4 p-4 rounded-lg bg-tertiary text-decoration-none" style="background: var(--fill-tertiary); border-radius: var(--radius-lg); transition: all var(--transition-fast);" onmouseover="this.style.background='var(--fill-secondary)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--fill-tertiary)'; this.style.transform='translateY(0)'">
-                        <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--ios-orange), var(--ios-yellow)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
+                    <a href="products.html?category=casa" class="ios-category-card">
+                        <div class="ios-category-icon" style="background: linear-gradient(135deg, #FF9500, #FFCC00);">
                             <i class="ph ph-house"></i>
                         </div>
-                        <div>
-                            <h3 style="font-size: var(--text-base); font-weight: var(--font-semibold); margin-bottom: 2px; color: var(--text-primary);">Casa & Cucina</h3>
-                            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0;">15 offerte disponibili</p>
-                        </div>
+                        <h3>Casa & Cucina</h3>
+                        <p>15 offerte</p>
                     </a>
-                    
-                    <a href="products.html?category=fashion" class="flex items-center gap-4 p-4 rounded-lg bg-tertiary text-decoration-none" style="background: var(--fill-tertiary); border-radius: var(--radius-lg); transition: all var(--transition-fast);" onmouseover="this.style.background='var(--fill-secondary)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--fill-tertiary)'; this.style.transform='translateY(0)'">
-                        <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: linear-gradient(135deg, var(--ios-pink), var(--ios-purple)); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;">
-                            <i class="ph ph-t-shirt"></i>
+                    <a href="products.html?category=fashion" class="ios-category-card">
+                        <div class="ios-category-icon" style="background: linear-gradient(135deg, #FF2D92, #AF52DE);">
+                            <i class="ph ph-shirt"></i>
                         </div>
-                        <div>
-                            <h3 style="font-size: var(--text-base); font-weight: var(--font-semibold); margin-bottom: 2px; color: var(--text-primary);">Fashion</h3>
-                            <p style="font-size: var(--text-sm); color: var(--text-secondary); margin: 0;">12 offerte disponibili</p>
-                        </div>
+                        <h3>Fashion</h3>
+                        <p>12 offerte</p>
                     </a>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CronoAI Promo -->
-    <section class="section" style="background: var(--bg-primary);">
-        <div class="container">
-            <div class="card" style="background: linear-gradient(135deg, var(--ios-purple), var(--ios-indigo)); color: white; border: none;">
-                <div class="card-body" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: center;">
-                    <div>
-                        <h2 style="font-size: var(--text-3xl); font-weight: var(--font-bold); margin-bottom: var(--space-4); color: white;">
-                            <i class="ph ph-sparkle" style="color: var(--ios-yellow);"></i>
-                            L'Intelligenza che ti fa Risparmiare
-                        </h2>
-                        <p style="font-size: var(--text-lg); margin-bottom: var(--space-6); opacity: 0.9; color: white;">
-                            Basta ricerche infinite. Chiedi a CronoAI di trovare il prodotto perfetto per te, 
+        <!-- CronoAI Promo -->
+        <section class="ios-section ios-section-accent">
+            <div class="ios-container">
+                <div class="ios-promo-card">
+                    <div class="ios-promo-content">
+                        <div class="ios-promo-icon">
+                            <i class="ph ph-robot"></i>
+                        </div>
+                        <h2>CronoAI</h2>
+                        <p>L'Intelligenza Artificiale che ti fa risparmiare</p>
+                        <p class="ios-promo-description">
+                            Chiedi a CronoAI di trovare il prodotto perfetto per te, 
                             analizzare i prezzi e scovare offerte nascoste.
                         </p>
-                        <a href="cronoai.html" class="btn btn-lg" style="background: rgba(255,255,255,0.9); color: var(--ios-purple); border: none;">
-                            <i class="ph ph-rocket-launch"></i>
+                        <a href="cronoai.html" class="ios-btn ios-btn-white">
+                            <i class="ph ph-sparkle"></i>
                             Prova CronoAI Gratis
                         </a>
                     </div>
-                    <div style="display: flex; justify-content: center;">
-                        <div style="background: rgba(255,255,255,0.1); backdrop-filter: var(--blur-thin); border-radius: var(--radius-2xl); padding: var(--space-6); max-width: 300px; border: 1px solid rgba(255,255,255,0.2);">
-                            <div style="background: rgba(255,255,255,0.9); color: var(--ios-purple); padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-3); font-size: var(--text-sm);">
-                                Trovami delle cuffie noise-cancelling sotto i 100€
-                            </div>
-                            <div style="background: rgba(255,255,255,0.2); color: white; padding: var(--space-3) var(--space-4); border-radius: var(--radius-lg); font-size: var(--text-sm);">
-                                Certo! Ho trovato 3 modelli con recensioni eccellenti. Te li mostro subito.
-                            </div>
+                    <div class="ios-promo-demo">
+                        <div class="ios-chat-bubble ios-chat-user">
+                            Trovami delle cuffie sotto i 100€
+                        </div>
+                        <div class="ios-chat-bubble ios-chat-ai">
+                            Ho trovato 3 modelli con ottime recensioni. Te li mostro subito!
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Today's Offers -->
-    <section class="section" id="offerte-oggi">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="ph ph-fire" style="color: var(--ios-red);"></i>
-                    Offerte Imperdibili di Oggi
-                </h2>
-                <p class="section-subtitle">
-                    La nostra selezione delle migliori promozioni Amazon disponibili solo per poche ore. 
-                    Verificate una ad una dal nostro team.
-                </p>
+        <!-- Today's Offers -->
+        <section class="ios-section" id="todaysOffers">
+            <div class="ios-container">
+                <div class="ios-section-header">
+                    <h2>
+                        <i class="ph ph-fire" style="color: #FF3B30;"></i>
+                        Offerte di Oggi
+                    </h2>
+                    <button class="ios-text-btn" onclick="location.href='products.html'">Vedi Tutte</button>
+                </div>
+                
+                <!-- iOS Filter Chips -->
+                <div class="ios-filter-chips">
+                    <button class="ios-filter-chip active" data-category="all">
+                        <i class="ph ph-star"></i>
+                        Tutte
+                    </button>
+                    <button class="ios-filter-chip" data-category="tech">
+                        <i class="ph ph-laptop"></i>
+                        Tech
+                    </button>
+                    <button class="ios-filter-chip" data-category="fashion">
+                        <i class="ph ph-shirt"></i>
+                        Moda
+                    </button>
+                    <button class="ios-filter-chip" data-category="casa">
+                        <i class="ph ph-house"></i>
+                        Casa
+                    </button>
+                    <button class="ios-filter-chip" data-category="smartphone">
+                        <i class="ph ph-device-mobile"></i>
+                        Smartphone
+                    </button>
+                </div>
+                
+                <!-- Products Grid -->
+                <div class="ios-products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
             </div>
-            
-            <!-- Filter Chips -->
-            <div class="filter-chips" style="justify-content: center; margin-bottom: var(--space-8);">
-                <button class="filter-chip active" data-category="all">
-                    <i class="ph ph-star"></i> Tutte
-                </button>
-                <button class="filter-chip" data-category="tech">
-                    <i class="ph ph-laptop"></i> Tech
-                </button>
-                <button class="filter-chip" data-category="fashion">
-                    <i class="ph ph-t-shirt"></i> Moda
-                </button>
-                <button class="filter-chip" data-category="casa">
-                    <i class="ph ph-house"></i> Casa
-                </button>
-                <button class="filter-chip" data-category="smartphone">
-                    <i class="ph ph-device-mobile"></i> Smartphone
-                </button>
-            </div>
-            
-            <!-- Products Grid -->
-            <div class="grid grid-auto-fit" id="productsGrid">
-                <!-- Products will be loaded here -->
-            </div>
-            
-            <div class="text-center mt-8">
-                <a href="products.html" class="btn btn-primary btn-lg">
-                    <i class="ph ph-arrow-right"></i>
-                    Vedi Tutte le 150+ Offerte
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- WhatsApp Community -->
-    <section class="section" style="background: linear-gradient(135deg, var(--ios-green), var(--ios-teal));">
-        <div class="container">
-            <div class="card" style="background: rgba(255,255,255,0.95); border: none;">
-                <div class="card-body" style="display: grid; grid-template-columns: auto 1fr; gap: var(--space-8); align-items: center;">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
-                        <i class="ph ph-whatsapp-logo" style="font-size: 48px; color: var(--ios-green);"></i>
-                        <i class="ph ph-telegram-logo" style="font-size: 48px; color: var(--ios-blue);"></i>
+        <!-- WhatsApp Community -->
+        <section class="ios-section ios-section-green">
+            <div class="ios-container">
+                <div class="ios-community-card">
+                    <div class="ios-community-icons">
+                        <div class="ios-community-icon ios-whatsapp">
+                            <i class="ph ph-whatsapp-logo"></i>
+                        </div>
+                        <div class="ios-community-icon ios-telegram">
+                            <i class="ph ph-telegram-logo"></i>
+                        </div>
                     </div>
-                    <div>
-                        <h2 style="font-size: var(--text-3xl); font-weight: var(--font-bold); margin-bottom: var(--space-4);">
-                            Entra nella Community
-                        </h2>
-                        <p style="font-size: var(--text-lg); margin-bottom: var(--space-6); color: var(--text-secondary);">
-                            Unisciti a migliaia di risparmiatori e ricevi le offerte lampo e gli errori di prezzo 
-                            direttamente sul tuo smartphone. Non perdere più un'occasione!
+                    <div class="ios-community-content">
+                        <h2>Entra nella Community</h2>
+                        <p>
+                            Unisciti a migliaia di risparmiatori e ricevi le offerte lampo 
+                            direttamente sul tuo smartphone.
                         </p>
-                        <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
-                            <a href="groups.html" class="btn btn-success">
+                        <div class="ios-community-actions">
+                            <a href="groups.html" class="ios-btn ios-btn-success">
                                 <i class="ph ph-whatsapp-logo"></i>
-                                Canale WhatsApp
+                                WhatsApp
                             </a>
-                            <a href="groups.html" class="btn" style="background: var(--ios-blue); color: white;">
+                            <a href="groups.html" class="ios-btn ios-btn-info">
                                 <i class="ph ph-telegram-logo"></i>
-                                Canale Telegram
+                                Telegram
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- How It Works -->
-    <section class="section">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Come Funziona</h2>
-                <p class="section-subtitle">
-                    Risparmiare su Amazon non è mai stato così semplice, veloce e sicuro.
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <div style="width: 64px; height: 64px; border-radius: var(--radius-2xl); background: linear-gradient(135deg, var(--ios-blue), var(--ios-purple)); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); color: white; font-size: 28px;">
+        <!-- How It Works -->
+        <section class="ios-section">
+            <div class="ios-container">
+                <div class="ios-section-header">
+                    <h2>Come Funziona</h2>
+                    <p>Risparmiare su Amazon non è mai stato così semplice</p>
+                </div>
+                <div class="ios-steps-grid">
+                    <div class="ios-step-card">
+                        <div class="ios-step-icon" style="background: linear-gradient(135deg, #007AFF, #5856D6);">
                             <i class="ph ph-magnifying-glass"></i>
                         </div>
-                        <h3 style="font-size: var(--text-xl); font-weight: var(--font-semibold); margin-bottom: var(--space-3);">1. Esplora</h3>
-                        <p style="color: var(--text-secondary);">
-                            Naviga tra le centinaia di offerte che il nostro team e la nostra AI trovano e verificano ogni giorno.
-                        </p>
+                        <h3>1. Esplora</h3>
+                        <p>Naviga tra centinaia di offerte verificate dal nostro team ogni giorno</p>
                     </div>
-                </div>
-                
-                <div class="card text-center">
-                    <div class="card-body">
-                        <div style="width: 64px; height: 64px; border-radius: var(--radius-2xl); background: linear-gradient(135deg, var(--ios-green), var(--ios-teal)); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); color: white; font-size: 28px;">
-                            <i class="ph ph-arrow-square-out"></i>
+                    <div class="ios-step-card">
+                        <div class="ios-step-icon" style="background: linear-gradient(135deg, #34C759, #00C7BE);">
+                            <i class="ph ph-cursor-click"></i>
                         </div>
-                        <h3 style="font-size: var(--text-xl); font-weight: var(--font-semibold); margin-bottom: var(--space-3);">2. Clicca</h3>
-                        <p style="color: var(--text-secondary);">
-                            Hai trovato il prodotto giusto? Clicca per visualizzare l'offerta direttamente sulla pagina ufficiale di Amazon.
-                        </p>
+                        <h3>2. Clicca</h3>
+                        <p>Visualizza l'offerta direttamente sulla pagina ufficiale Amazon</p>
                     </div>
-                </div>
-                
-                <div class="card text-center">
-                    <div class="card-body">
-                        <div style="width: 64px; height: 64px; border-radius: var(--radius-2xl); background: linear-gradient(135deg, var(--ios-orange), var(--ios-yellow)); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); color: white; font-size: 28px;">
+                    <div class="ios-step-card">
+                        <div class="ios-step-icon" style="background: linear-gradient(135deg, #FF9500, #FFCC00);">
                             <i class="ph ph-shopping-cart"></i>
                         </div>
-                        <h3 style="font-size: var(--text-xl); font-weight: var(--font-semibold); margin-bottom: var(--space-3);">3. Risparmia</h3>
-                        <p style="color: var(--text-secondary);">
-                            Aggiungi il prodotto al carrello e completa il tuo acquisto su Amazon, godendoti il risparmio che hai ottenuto.
-                        </p>
+                        <h3>3. Risparmia</h3>
+                        <p>Completa l'acquisto su Amazon e goditi il risparmio ottenuto</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- FAQ Section -->
-    <section class="section" style="background: var(--bg-primary);">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Domande Frequenti</h2>
-                <p class="section-subtitle">
-                    Hai dei dubbi? Qui trovi le risposte alle domande più comuni sul nostro servizio.
-                </p>
-            </div>
-            
-            <div style="max-width: 800px; margin: 0 auto;">
-                <div class="card" style="margin-bottom: var(--space-4);">
-                    <div class="faq-item" style="cursor: pointer;" onclick="toggleFAQ(this)">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-6);">
-                            <span style="font-weight: var(--font-semibold);">Cronoshop è un servizio gratuito?</span>
-                            <i class="ph ph-plus" style="transition: transform var(--transition-fast);"></i>
-                        </div>
-                        <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height var(--transition-normal);">
-                            <div style="padding: 0 var(--space-6) var(--space-6); color: var(--text-secondary);">
-                                Assolutamente sì. Cronoshop è e sarà sempre 100% gratuito. Guadagniamo una piccola commissione tramite il Programma di Affiliazione Amazon per gli acquisti idonei, senza alcun costo aggiuntivo per te.
-                            </div>
+        <!-- FAQ Section -->
+        <section class="ios-section ios-section-gray">
+            <div class="ios-container">
+                <div class="ios-section-header">
+                    <h2>Domande Frequenti</h2>
+                    <p>Tutto quello che devi sapere su Cronoshop</p>
+                </div>
+                <div class="ios-faq-list">
+                    <div class="ios-faq-item">
+                        <button class="ios-faq-question" onclick="toggleFAQ(this)">
+                            <span>Cronoshop è un servizio gratuito?</span>
+                            <i class="ph ph-plus"></i>
+                        </button>
+                        <div class="ios-faq-answer">
+                            <p>Sì, Cronoshop è completamente gratuito. Guadagniamo tramite commissioni Amazon senza costi aggiuntivi per te.</p>
                         </div>
                     </div>
-                </div>
-                
-                <div class="card" style="margin-bottom: var(--space-4);">
-                    <div class="faq-item" style="cursor: pointer;" onclick="toggleFAQ(this)">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-6);">
-                            <span style="font-weight: var(--font-semibold);">Le offerte sono sicure e verificate?</span>
-                            <i class="ph ph-plus" style="transition: transform var(--transition-fast);"></i>
-                        </div>
-                        <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height var(--transition-normal);">
-                            <div style="padding: 0 var(--space-6) var(--space-6); color: var(--text-secondary);">
-                                Sì. Ogni link punta direttamente al sito ufficiale di Amazon.it. Il nostro team verifica manualmente la validità delle offerte principali per garantirti la massima sicurezza e trasparenza.
-                            </div>
+                    <div class="ios-faq-item">
+                        <button class="ios-faq-question" onclick="toggleFAQ(this)">
+                            <span>Le offerte sono sicure e verificate?</span>
+                            <i class="ph ph-plus"></i>
+                        </button>
+                        <div class="ios-faq-answer">
+                            <p>Assolutamente. Ogni link punta direttamente ad Amazon.it e il nostro team verifica manualmente le offerte.</p>
                         </div>
                     </div>
-                </div>
-                
-                <div class="card">
-                    <div class="faq-item" style="cursor: pointer;" onclick="toggleFAQ(this)">
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-6);">
-                            <span style="font-weight: var(--font-semibold);">Come funziona CronoAI?</span>
-                            <i class="ph ph-plus" style="transition: transform var(--transition-fast);"></i>
-                        </div>
-                        <div class="faq-answer" style="max-height: 0; overflow: hidden; transition: max-height var(--transition-normal);">
-                            <div style="padding: 0 var(--space-6) var(--space-6); color: var(--text-secondary);">
-                                CronoAI è un assistente basato su intelligenza artificiale addestrato per analizzare le tue richieste e cercare le migliori offerte corrispondenti nel catalogo Amazon. Può anche analizzare l'andamento dei prezzi e fornirti consigli personalizzati.
-                            </div>
+                    <div class="ios-faq-item">
+                        <button class="ios-faq-question" onclick="toggleFAQ(this)">
+                            <span>Come funziona CronoAI?</span>
+                            <i class="ph ph-plus"></i>
+                        </button>
+                        <div class="ios-faq-answer">
+                            <p>CronoAI è un assistente AI che analizza le tue richieste e trova le migliori offerte corrispondenti nel catalogo Amazon.</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
+    <!-- iOS Footer -->
+    <footer class="ios-footer">
+        <div class="ios-container">
+            <div class="ios-footer-content">
+                <div class="ios-footer-section">
                     <h4>Cronoshop</h4>
-                    <p style="color: var(--text-secondary); font-size: var(--text-sm); margin-bottom: var(--space-4);">
-                        Il tuo alleato quotidiano per scovare le migliori offerte su Amazon e risparmiare senza fatica.
-                    </p>
-                    <div style="display: flex; gap: var(--space-3);">
-                        <a href="#" style="color: var(--text-secondary); font-size: 24px;">
+                    <p>Il tuo alleato per le migliori offerte Amazon</p>
+                    <div class="ios-social-links">
+                        <a href="#" class="ios-social-link">
                             <i class="ph ph-whatsapp-logo"></i>
                         </a>
-                        <a href="#" style="color: var(--text-secondary); font-size: 24px;">
+                        <a href="#" class="ios-social-link">
                             <i class="ph ph-telegram-logo"></i>
                         </a>
-                        <a href="#" style="color: var(--text-secondary); font-size: 24px;">
+                        <a href="#" class="ios-social-link">
                             <i class="ph ph-instagram-logo"></i>
                         </a>
                     </div>
                 </div>
-                
-                <div class="footer-section">
+                <div class="ios-footer-section">
                     <h4>Esplora</h4>
                     <ul>
                         <li><a href="products.html">Tutte le Offerte</a></li>
                         <li><a href="cronoai.html">CronoAI</a></li>
                         <li><a href="categorie.html">Categorie</a></li>
-                        <li><a href="blog.html">Blog & Guide</a></li>
+                        <li><a href="blog.html">Blog</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-section">
+                <div class="ios-footer-section">
                     <h4>Community</h4>
                     <ul>
-                        <li><a href="groups.html">Gruppi WhatsApp</a></li>
-                        <li><a href="groups.html">Canale Telegram</a></li>
+                        <li><a href="groups.html">WhatsApp</a></li>
+                        <li><a href="groups.html">Telegram</a></li>
                         <li><a href="wishlist.html">Wishlist</a></li>
                         <li><a href="account.html">Account</a></li>
                     </ul>
                 </div>
-                
-                <div class="footer-section">
+                <div class="ios-footer-section">
                     <h4>Supporto</h4>
                     <ul>
                         <li><a href="faq.html">FAQ</a></li>
                         <li><a href="chisiamo.html">Chi Siamo</a></li>
-                        <li><a href="privacy.html">Privacy Policy</a></li>
-                        <li><a href="#contatti">Contatti</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Termini</a></li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Cronoshop. Tutti i diritti riservati. Cronoshop è un membro del Programma di Affiliazione Amazon EU.</p>
+            <div class="ios-footer-bottom">
+                <p>&copy; 2025 Cronoshop. Tutti i diritti riservati.</p>
             </div>
         </div>
     </footer>
 
     <!-- Scripts -->
     <script>
-        // Load navigation
-        fetch('nav.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('navigation-placeholder').innerHTML = data;
-                
-                // Execute navigation script
-                const navScript = document.querySelector('#navigation-placeholder script');
-                if (navScript) {
-                    eval(navScript.textContent);
-                }
-            })
-            .catch(error => console.error('Error loading navigation:', error));
-
-        // Sample products for homepage
+        // Sample products data
         const featuredProducts = [
             {
                 id: 1,
@@ -1538,7 +433,8 @@
                 price: 1299,
                 originalPrice: 1499,
                 discount: 13,
-                image: "/placeholder.svg?height=200&width=300&text=iPhone+15+Pro"
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0628fba6c1e331507b4362e9992865ff.jpg-5Lv6yjg3TqsOLGWOUeGml0aFqCyoMT.jpeg",
+                link: "#"
             },
             {
                 id: 2,
@@ -1547,7 +443,8 @@
                 price: 1199,
                 originalPrice: 1399,
                 discount: 14,
-                image: "/placeholder.svg?height=200&width=300&text=MacBook+Air"
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/buttons-3XlxdJv81I6jPGq05mBQjqP8OkwUGS.png",
+                link: "#"
             },
             {
                 id: 3,
@@ -1556,7 +453,8 @@
                 price: 89,
                 originalPrice: 150,
                 discount: 41,
-                image: "/placeholder.svg?height=200&width=300&text=Nike+Air+Max"
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/BLOG_230929_IOSAppDesign-wDKtuVyf2lhUMjaN1jY2yEH1UlJrY4.webp",
+                link: "#"
             },
             {
                 id: 4,
@@ -1565,7 +463,8 @@
                 price: 599,
                 originalPrice: 799,
                 discount: 25,
-                image: "/placeholder.svg?height=200&width=300&text=Dyson+V15"
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/search-entries-94NBVrYzKdFkylNS8ysSXXI3gh4vZn.png",
+                link: "#"
             },
             {
                 id: 5,
@@ -1574,7 +473,8 @@
                 price: 229,
                 originalPrice: 279,
                 discount: 18,
-                image: "/placeholder.svg?height=200&width=300&text=AirPods+Pro"
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ios-experience-ui-components-l3cvKVU6Ez2qvqm4BndToghXoGYSrB.png",
+                link: "#"
             },
             {
                 id: 6,
@@ -1583,212 +483,304 @@
                 price: 799,
                 originalPrice: 999,
                 discount: 20,
-                image: "/placeholder.svg?height=200&width=300&text=Galaxy+S24"
+                image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/figma-ios-15-ui-kit-9de9EAJmwgaIiVrkX2GLjwlEvdWivZ.png",
+                link: "#"
             }
         ];
 
         let currentFilter = 'all';
 
-        // Filter functionality
-        function setupFilters() {
-            const filterChips = document.querySelectorAll('.filter-chip');
-            
-            filterChips.forEach(chip => {
-                chip.addEventListener('click', () => {
-                    // Remove active class from all chips
-                    filterChips.forEach(c => c.classList.remove('active'));
-                    // Add active class to clicked chip
-                    chip.classList.add('active');
-                    
-                    currentFilter = chip.dataset.category;
-                    renderProducts();
+        // iOS App functionality
+        class CronoshopApp {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadCartBadge();
+                this.renderProducts();
+                this.applyTheme();
+            }
+
+            setupEventListeners() {
+                // Menu toggle
+                document.getElementById('menuToggle').addEventListener('click', () => {
+                    this.toggleMenu();
                 });
-            });
-        }
 
-        // Render products
-        function renderProducts() {
-            const grid = document.getElementById('productsGrid');
-            if (!grid) return;
+                document.getElementById('closeMenu').addEventListener('click', () => {
+                    this.closeMenu();
+                });
 
-            const filteredProducts = currentFilter === 'all' 
-                ? featuredProducts 
-                : featuredProducts.filter(p => p.category === currentFilter);
+                document.getElementById('overlay').addEventListener('click', () => {
+                    this.closeMenu();
+                    this.closeSearch();
+                });
 
-            grid.innerHTML = filteredProducts.map(product => `
-                <div class="card product-card animate-fade-in-up">
-                    <img src="${product.image}" alt="${product.title}" class="product-image">
-                    <div class="product-info">
-                        <div class="product-category">${getCategoryName(product.category)}</div>
-                        <h3 class="product-title">${product.title}</h3>
-                        <div class="product-price">
-                            <span class="price-current">€${product.price}</span>
-                            <span class="price-original">€${product.originalPrice}</span>
-                            <span class="discount-badge">-${product.discount}%</span>
+                // Search toggle
+                document.getElementById('searchToggle').addEventListener('click', () => {
+                    this.toggleSearch();
+                });
+
+                document.getElementById('searchCancel').addEventListener('click', () => {
+                    this.closeSearch();
+                });
+
+                // Theme toggle
+                document.getElementById('themeToggle').addEventListener('click', () => {
+                    this.toggleTheme();
+                });
+
+                // Filter chips
+                document.querySelectorAll('.ios-filter-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        this.setFilter(chip.dataset.category);
+                    });
+                });
+
+                // Close menu when clicking menu items
+                document.querySelectorAll('.ios-menu-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        this.closeMenu();
+                    });
+                });
+            }
+
+            toggleMenu() {
+                const menu = document.getElementById('mobileMenu');
+                const overlay = document.getElementById('overlay');
+                
+                menu.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.classList.toggle('ios-menu-open');
+            }
+
+            closeMenu() {
+                const menu = document.getElementById('mobileMenu');
+                const overlay = document.getElementById('overlay');
+                
+                menu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.classList.remove('ios-menu-open');
+            }
+
+            toggleSearch() {
+                const container = document.getElementById('searchContainer');
+                const navbar = document.querySelector('.ios-navbar');
+                
+                container.classList.toggle('active');
+                navbar.classList.toggle('search-active');
+                
+                if (container.classList.contains('active')) {
+                    document.getElementById('searchInput').focus();
+                }
+            }
+
+            closeSearch() {
+                const container = document.getElementById('searchContainer');
+                const navbar = document.querySelector('.ios-navbar');
+                
+                container.classList.remove('active');
+                navbar.classList.remove('search-active');
+                document.getElementById('searchInput').value = '';
+            }
+
+            toggleTheme() {
+                const body = document.body;
+                const themeBtn = document.getElementById('themeToggle');
+                const icon = themeBtn.querySelector('i');
+                
+                body.classList.toggle('ios-dark-mode');
+                
+                if (body.classList.contains('ios-dark-mode')) {
+                    icon.className = 'ph ph-sun';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    icon.className = 'ph ph-moon';
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            applyTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                const body = document.body;
+                const themeBtn = document.getElementById('themeToggle');
+                const icon = themeBtn.querySelector('i');
+                
+                if (savedTheme === 'dark') {
+                    body.classList.add('ios-dark-mode');
+                    icon.className = 'ph ph-sun';
+                } else {
+                    body.classList.remove('ios-dark-mode');
+                    icon.className = 'ph ph-moon';
+                }
+            }
+
+            setFilter(category) {
+                currentFilter = category;
+                
+                // Update active chip
+                document.querySelectorAll('.ios-filter-chip').forEach(chip => {
+                    chip.classList.remove('active');
+                });
+                document.querySelector(`[data-category="${category}"]`).classList.add('active');
+                
+                this.renderProducts();
+            }
+
+            renderProducts() {
+                const grid = document.getElementById('productsGrid');
+                const filteredProducts = currentFilter === 'all' 
+                    ? featuredProducts 
+                    : featuredProducts.filter(p => p.category === currentFilter);
+
+                grid.innerHTML = filteredProducts.map(product => `
+                    <div class="ios-product-card">
+                        <div class="ios-product-image">
+                            <img src="${product.image}" alt="${product.title}" loading="lazy">
                         </div>
-                        <div class="product-actions">
-                            <a href="#" class="btn btn-primary btn-sm" onclick="addToCart(${product.id})">
-                                <i class="ph ph-shopping-cart"></i>
-                                Acquista
-                            </a>
-                            <button class="btn btn-secondary btn-sm" onclick="addToWishlist(${product.id})" style="width: 44px;">
-                                <i class="ph ph-heart"></i>
-                            </button>
+                        <div class="ios-product-info">
+                            <div class="ios-product-category">${this.getCategoryName(product.category)}</div>
+                            <h3 class="ios-product-title">${product.title}</h3>
+                            <div class="ios-product-price">
+                                <span class="ios-price-current">€${product.price}</span>
+                                <span class="ios-price-original">€${product.originalPrice}</span>
+                                <span class="ios-discount-badge">-${product.discount}%</span>
+                            </div>
+                            <div class="ios-product-actions">
+                                <button class="ios-btn ios-btn-primary ios-btn-small" onclick="app.addToCart(${product.id})">
+                                    <i class="ph ph-shopping-cart"></i>
+                                    Acquista
+                                </button>
+                                <button class="ios-btn ios-btn-secondary ios-btn-icon" onclick="app.addToWishlist(${product.id})">
+                                    <i class="ph ph-heart"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
-        }
+                `).join('');
+            }
 
-        function getCategoryName(category) {
-            const names = {
-                smartphone: 'Smartphone',
-                tech: 'Tech',
-                fashion: 'Fashion',
-                casa: 'Casa'
-            };
-            return names[category] || category;
+            getCategoryName(category) {
+                const names = {
+                    smartphone: 'Smartphone',
+                    tech: 'Tech',
+                    fashion: 'Fashion',
+                    casa: 'Casa'
+                };
+                return names[category] || category;
+            }
+
+            addToCart(productId) {
+                const product = featuredProducts.find(p => p.id === productId);
+                if (!product) return;
+
+                try {
+                    let cart = JSON.parse(localStorage.getItem('cronoshop_cart') || '[]');
+                    const existingItem = cart.find(item => item.id === productId);
+                    
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        cart.push({ ...product, quantity: 1 });
+                    }
+                    
+                    localStorage.setItem('cronoshop_cart', JSON.stringify(cart));
+                    this.loadCartBadge();
+                    this.showNotification('Prodotto aggiunto al carrello', 'success');
+                } catch (error) {
+                    console.error('Error adding to cart:', error);
+                    this.showNotification('Errore nell\'aggiungere al carrello', 'error');
+                }
+            }
+
+            addToWishlist(productId) {
+                const product = featuredProducts.find(p => p.id === productId);
+                if (!product) return;
+
+                try {
+                    let wishlist = JSON.parse(localStorage.getItem('cronoshop_wishlist') || '[]');
+                    const existingItem = wishlist.find(item => item.id === productId);
+                    
+                    if (existingItem) {
+                        this.showNotification('Prodotto già nella wishlist', 'info');
+                        return;
+                    }
+                    
+                    wishlist.push(product);
+                    localStorage.setItem('cronoshop_wishlist', JSON.stringify(wishlist));
+                    this.showNotification('Prodotto aggiunto alla wishlist', 'success');
+                } catch (error) {
+                    console.error('Error adding to wishlist:', error);
+                    this.showNotification('Errore nell\'aggiungere alla wishlist', 'error');
+                }
+            }
+
+            loadCartBadge() {
+                try {
+                    const cart = JSON.parse(localStorage.getItem('cronoshop_cart') || '[]');
+                    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                    const badge = document.getElementById('cartBadge');
+                    badge.textContent = totalItems;
+                    badge.style.display = totalItems > 0 ? 'block' : 'none';
+                } catch (error) {
+                    console.error('Error loading cart badge:', error);
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `ios-notification ios-notification-${type}`;
+                notification.innerHTML = `
+                    <div class="ios-notification-content">
+                        <i class="ph ph-${type === 'success' ? 'check-circle' : type === 'error' ? 'x-circle' : 'info'}"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+
+                setTimeout(() => notification.classList.add('show'), 100);
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
         }
 
         // FAQ functionality
         function toggleFAQ(element) {
-            const faqItem = element;
-            const answer = faqItem.querySelector('.faq-answer');
-            const icon = faqItem.querySelector('i');
+            const faqItem = element.closest('.ios-faq-item');
+            const answer = faqItem.querySelector('.ios-faq-answer');
+            const icon = element.querySelector('i');
             
-            const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
+            const isOpen = faqItem.classList.contains('active');
             
-            if (isOpen) {
-                answer.style.maxHeight = '0px';
-                icon.className = 'ph ph-plus';
-            } else {
-                answer.style.maxHeight = answer.scrollHeight + 'px';
+            // Close all other FAQs
+            document.querySelectorAll('.ios-faq-item').forEach(item => {
+                item.classList.remove('active');
+                item.querySelector('i').className = 'ph ph-plus';
+            });
+            
+            if (!isOpen) {
+                faqItem.classList.add('active');
                 icon.className = 'ph ph-minus';
             }
         }
 
-        // Cart functionality
-        function addToCart(productId) {
-            const product = featuredProducts.find(p => p.id === productId);
-            if (!product) return;
-
-            try {
-                let cart = JSON.parse(localStorage.getItem('cronoshop_cart') || '[]');
-                const existingItem = cart.find(item => item.id === productId);
-                
-                if (existingItem) {
-                    existingItem.quantity += 1;
-                } else {
-                    cart.push({ ...product, quantity: 1 });
-                }
-                
-                localStorage.setItem('cronoshop_cart', JSON.stringify(cart));
-                
-                // Update cart badge if navigation is loaded
-                if (window.cronoshopNav) {
-                    window.cronoshopNav.refreshCartBadge();
-                }
-                
-                showNotification('✅ Prodotto aggiunto al carrello');
-            } catch (error) {
-                console.error('Error adding to cart:', error);
-                showNotification('❌ Errore nell\'aggiungere al carrello');
-            }
+        // Smooth scroll functions
+        function scrollToOffers() {
+            document.getElementById('todaysOffers').scrollIntoView({
+                behavior: 'smooth'
+            });
         }
 
-        // Wishlist functionality
-        function addToWishlist(productId) {
-            const product = featuredProducts.find(p => p.id === productId);
-            if (!product) return;
-
-            try {
-                let wishlist = JSON.parse(localStorage.getItem('cronoshop_wishlist') || '[]');
-                const existingItem = wishlist.find(item => item.id === productId);
-                
-                if (existingItem) {
-                    showNotification('ℹ️ Prodotto già nella wishlist');
-                    return;
-                }
-                
-                wishlist.push(product);
-                localStorage.setItem('cronoshop_wishlist', JSON.stringify(wishlist));
-                showNotification('❤️ Prodotto aggiunto alla wishlist');
-            } catch (error) {
-                console.error('Error adding to wishlist:', error);
-                showNotification('❌ Errore nell\'aggiungere alla wishlist');
-            }
-        }
-
-        // Notification system
-        function showNotification(message) {
-            // Remove existing notification
-            const existingNotification = document.querySelector('.notification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-
-            // Create new notification
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <span class="notification-icon">${message.split(' ')[0]}</span>
-                <span>${message.substring(message.indexOf(' ') + 1)}</span>
-            `;
-
-            document.body.appendChild(notification);
-
-            // Show notification
-            setTimeout(() => notification.classList.add('show'), 100);
-
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Smooth scroll for anchor links
-        document.addEventListener('click', (e) => {
-            if (e.target.matches('a[href^="#"]')) {
-                e.preventDefault();
-                const target = document.querySelector(e.target.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-
-        // Initialize when DOM is loaded
+        // Initialize app
+        let app;
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                setupFilters();
-                renderProducts();
-            }, 100);
+            app = new CronoshopApp();
         });
-
-        // Add intersection observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('animate-fade-in-up');
-                }
-            });
-        }, observerOptions);
-
-        // Observe elements when they're added to DOM
-        setTimeout(() => {
-            document.querySelectorAll('.card, .product-card').forEach(card => {
-                observer.observe(card);
-            });
-        }, 500);
     </script>
 </body>
 </html>
