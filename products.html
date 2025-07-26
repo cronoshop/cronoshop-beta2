@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodotti in Offerta - Cronoshop</title>
+    
+    <meta name="description" content="Sfoglia tutti i prodotti selezionati da Cronoshop con il nuovo design iOS. Trova le migliori offerte su smartphone, tech, moda, casa e molto altro.">
+    <meta name="keywords" content="prodotti offerta, sconti amazon, cronoshop prodotti, shopping online">
+    <meta name="author" content="Cronoshop Team">
+    <link rel="canonical" href="https://www.cronoshop.eu/products.html">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/cronoshop-logo.png">
+    <link rel="apple-touch-icon" href="assets/cronoshop-logo.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <!-- Navigation will be loaded here -->
+    <div id="navigation-placeholder"></div>
+
+    <!-- Main Content -->
+    <main style="margin-top: var(--header-height); padding: var(--space-6) 0;">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="section-header">
+                <h1 class="section-title">Tutti i Prodotti</h1>
+                <p class="section-subtitle">
+                    Esplora la nostra selezione curata di offerte con il nuovo design iOS. 
+                    Usa i filtri per trovare esattamente ciò che cerchi.
+                </p>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="card" style="margin-bottom: var(--space-8);">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6);">
+                        <h2 style="font-size: var(--text-xl); font-weight: var(--font-semibold);">
+                            <i class="ph ph-funnel"></i>
+                            Filtra per Categoria
+                        </h2>
+                        <button class="btn btn-secondary btn-sm" id="clearFilters">
+                            <i class="ph ph-x"></i>
+                            Cancella Filtri
+                        </button>
+                    </div>
+                    
+                    <div class="filter-chips" style="margin-bottom: var(--space-6);">
+                        <button class="filter-chip active" data-category="all">
+                            <i class="ph ph-star"></i> Tutti
+                        </button>
+                        <button class="filter-chip" data-category="smartphone">
+                            <i class="ph ph-device-mobile"></i> Smartphone
+                        </button>
+                        <button class="filter-chip" data-category="tech">
+                            <i class="ph ph-laptop"></i> Tech
+                        </button>
+                        <button class="filter-chip" data-category="fashion">
+                            <i class="ph ph-t-shirt"></i> Fashion
+                        </button>
+                        <button class="filter-chip" data-category="casa">
+                            <i class="ph ph-house"></i> Casa
+                        </button>
+                        <button class="filter-chip" data-category="salute">
+                            <i class="ph ph-heart-straight"></i> Salute
+                        </button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;">
+                        <label style="font-size: var(--text-sm); font-weight: var(--font-medium); color: var(--text-secondary);">
+                            Ordina per:
+                        </label>
+                        <select class="form-select" id="sortSelect" style="min-width: 200px;">
+                            <option value="relevance">Rilevanza</option>
+                            <option value="price-low">Prezzo: Crescente</option>
+                            <option value="price-high">Prezzo: Decrescente</option>
+                            <option value="discount">Sconto Maggiore</option>
+                            <option value="name">Nome A-Z</option>
+                        </select>
+                        
+                        <div style="margin-left: auto; display: flex; align-items: center; gap: var(--space-2);">
+                            <span style="font-size: var(--text-sm); color: var(--text-secondary);">
+                                <span id="resultsCount">0</span> prodotti trovati
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-auto-fit" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+
+            <!-- Load More Section -->
+            <div class="text-center mt-8" id="loadMoreSection">
+                <button class="btn btn-primary btn-lg" id="loadMoreBtn">
+                    <i class="ph ph-plus"></i>
+                    Carica Altri Prodotti
+                </button>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-state-icon">🔍</div>
+                <h3 class="empty-state-title">Nessun prodotto trovato</h3>
+                <p class="empty-state-subtitle">
+                    Prova a modificare i filtri o cerca qualcos'altro.
+                </p>
+                <button class="btn btn-primary" onclick="clearAllFilters()">
+                    <i class="ph ph-arrow-clockwise"></i>
+                    Mostra Tutti i Prodotti
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="main.js"></script>
+    <script>
+        // Load navigation
+        fetch('nav.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navigation-placeholder').innerHTML = data;
+                
+                // Execute navigation script
+                const navScript = document.querySelector('#navigation-placeholder script');
+                if (navScript) {
+                    eval(navScript.textContent);
+                }
+            })
+            .catch(error => console.error('Error loading navigation:', error));
+
+        // Products page functionality
+        class ProductsPage {
+            constructor() {
+                this.currentFilter = 'all';
+                this.currentSort = 'relevance';
+                this.currentPage = 0;
+                this.productsPerPage = 12;
+                this.allProducts = [];
+                this.filteredProducts = [];
+                this.searchQuery = '';
+                
+                this.init();
+            }
+
+            init() {
+                this.loadProducts();
+                this.setupEventListeners();
+                this.handleURLParams();
+                this.renderProducts();
+            }
+
+            loadProducts() {
+                // Use products from main.js
+                if (typeof products !== 'undefined' && Array.isArray(products)) {
+                    this.allProducts = products;
+                    console.log(`Loaded ${products.length} products`);
+                } else {
+                    console.error('Products data not found. Make sure main.js is loaded.');
+                    this.showError();
+                }
+            }
+
+            setupEventListeners() {
+                // Filter chips
+                document.querySelectorAll('.filter-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                        chip.classList.add('active');
+                        this.currentFilter = chip.dataset.category;
+                        this.currentPage = 0;
+                        this.renderProducts();
+                    });
+                });
+
+                // Clear filters
+                document.getElementById('clearFilters')?.addEventListener('click', () => {
+                    this.clearAllFilters();
+                });
+
+                // Sort select
+                document.getElementById('sortSelect')?.addEventListener('change', (e) => {
+                    this.currentSort = e.target.value;
+                    this.currentPage = 0;
+                    this.renderProducts();
+                });
+
+                // Load more button
+                document.getElementById('loadMoreBtn')?.addEventListener('click', () => {
+                    this.loadMore();
+                });
+            }
+
+            handleURLParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const category = urlParams.get('category');
+                const search = urlParams.get('search');
+
+                if (category) {
+                    this.currentFilter = category;
+                    const filterChip = document.querySelector(`[data-category="${category}"]`);
+                    if (filterChip) {
+                        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                        filterChip.classList.add('active');
+                    }
+                }
+
+                if (search) {
+                    this.searchQuery = search;
+                }
+            }
+
+            filterProducts() {
+                let filtered = [...this.allProducts];
+
+                // Apply category filter
+                if (this.currentFilter !== 'all') {
+                    filtered = filtered.filter(product => product.categoria === this.currentFilter);
+                }
+
+                // Apply search filter
+                if (this.searchQuery) {
+                    const query = this.searchQuery.toLowerCase();
+                    filtered = filtered.filter(product => 
+                        product.nome.toLowerCase().includes(query) ||
+                        product.descrizione?.toLowerCase().includes(query) ||
+                        product.categoria.toLowerCase().includes(query)
+                    );
+                }
+
+                // Apply sorting
+                switch (this.currentSort) {
+                    case 'price-low':
+                        filtered.sort((a, b) => this.getPrice(a) - this.getPrice(b));
+                        break;
+                    case 'price-high':
+                        filtered.sort((a, b) => this.getPrice(b) - this.getPrice(a));
+                        break;
+                    case 'discount':
+                        filtered.sort((a, b) => (b.sconto || 0) - (a.sconto || 0));
+                        break;
+                    case 'name':
+                        filtered.sort((a, b) => a.nome.localeCompare(b.nome));
+                        break;
+                    default:
+                        // Keep original order for relevance
+                        break;
+                }
+
+                this.filteredProducts = filtered;
+            }
+
+            getPrice(product) {
+                return typeof product.prezzo === 'number' ? product.prezzo : parseFloat(product.prezzo) || 0;
+            }
+
+            renderProducts() {
+                this.filterProducts();
+                
+                const grid = document.getElementById('productsGrid');
+                const emptyState = document.getElementById('emptyState');
+                const loadMoreSection = document.getElementById('loadMoreSection');
+                const resultsCount = document.getElementById('resultsCount');
+
+                if (!grid) return;
+
+                // Update results count
+                if (resultsCount) {
+                    resultsCount.textContent = this.filteredProducts.length;
+                }
+
+                // Show empty state if no products
+                if (this.filteredProducts.length === 0) {
+                    grid.style.display = 'none';
+                    loadMoreSection.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // Hide empty state and show grid
+                emptyState.style.display = 'none';
+                grid.style.display = 'grid';
+
+                // Calculate products to show
+                const endIndex = (this.currentPage + 1) * this.productsPerPage;
+                const productsToShow = this.filteredProducts.slice(0, endIndex);
+
+                // Render products
+                grid.innerHTML = productsToShow.map(product => this.createProductCard(product)).join('');
+
+                // Show/hide load more button
+                if (loadMoreSection) {
+                    loadMoreSection.style.display = endIndex >= this.filteredProducts.length ? 'none' : 'block';
+                }
+
+                // Add animation to new cards
+                setTimeout(() => {
+                    grid.querySelectorAll('.product-card').forEach((card, index) => {
+                        card.style.animationDelay = `${index * 0.1}s`;
+                        card.classList.add('animate-fade-in-up');
+                    });
+                }, 100);
+            }
+
+            createProductCard(product) {
+                const price = this.getPrice(product);
+                const originalPrice = typeof product.prezzo_originale === 'number' 
+                    ? product.prezzo_originale 
+                    : parseFloat(product.prezzo_originale) || null;
+                
+                return `
+                    <div class="card product-card">
+                        <img src="${product.img}" alt="${product.nome}" class="product-image" loading="lazy">
+                        <div class="product-info">
+                            <div class="product-category">${this.getCategoryName(product.categoria)}</div>
+                            <h3 class="product-title">${product.nome}</h3>
+                            <div class="product-price">
+                                <span class="price-current">€${price.toFixed(2)}</span>
+                                ${originalPrice ? `<span class="price-original">€${originalPrice.toFixed(2)}</span>` : ''}
+                                ${product.sconto ? `<span class="discount-badge">-${product.sconto}%</span>` : ''}
+                            </div>
+                            <div class="product-actions">
+                                <a href="${product.link}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                                    <i class="ph ph-shopping-cart"></i>
+                                    Acquista
+                                </a>
+                                <button class="btn btn-secondary btn-sm" onclick="addToWishlist('${product.id}')" style="width: 44px;">
+                                    <i class="ph ph-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            getCategoryName(category) {
+                const categoryNames = {
+                    smartphone: 'Smartphone',
+                    tech: 'Tech',
+                    fashion: 'Fashion',
+                    casa: 'Casa',
+                    salute: 'Salute',
+                    sport: 'Sport',
+                    auto: 'Auto'
+                };
+                return categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1);
+            }
+
+            loadMore() {
+                this.currentPage++;
+                this.renderProducts();
+            }
+
+            clearAllFilters() {
+                this.currentFilter = 'all';
+                this.currentSort = 'relevance';
+                this.currentPage = 0;
+                this.searchQuery = '';
+                
+                // Update UI
+                document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                document.querySelector('[data-category="all"]')?.classList.add('active');
+                
+                const sortSelect = document.getElementById('sortSelect');
+                if (sortSelect) sortSelect.value = 'relevance';
+                
+                this.renderProducts();
+            }
+
+            showError() {
+                const grid = document.getElementById('productsGrid');
+                if (grid) {
+                    grid.innerHTML = `
+                        <div class="empty-state" style="grid-column: 1 / -1;">
+                            <div class="empty-state-icon">⚠️</div>
+                            <h3 class="empty-state-title">Errore nel caricamento</h3>
+                            <p class="empty-state-subtitle">
+                                Non è stato possibile caricare i prodotti. Riprova più tardi.
+                            </p>
+                            <button class="btn btn-primary" onclick="location.reload()">
+                                <i class="ph ph-arrow-clockwise"></i>
+                                Ricarica Pagina
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Wishlist functionality
+        function addToWishlist(productId) {
+            try {
+                let wishlist = JSON.parse(localStorage.getItem('cronoshop_wishlist') || '[]');
+                const product = products.find(p => p.id === productId);
+                
+                if (!product) return;
+                
+                const existingItem = wishlist.find(item => item.id === productId);
+                
+                if (existingItem) {
+                    showNotification('ℹ️ Prodotto già nella wishlist');
+                    return;
+                }
+                
+                wishlist.push(product);
+                localStorage.setItem('cronoshop_wishlist', JSON.stringify(wishlist));
+                showNotification('❤️ Prodotto aggiunto alla wishlist');
+            } catch (error) {
+                console.error('Error adding to wishlist:', error);
+                showNotification('❌ Errore nell\'aggiungere alla wishlist');
+            }
+        }
+
+        // Global function for clear filters button
+        function clearAllFilters() {
+            if (window.productsPage) {
+                window.productsPage.clearAllFilters();
+            }
+        }
+
+        // Notification system
+        function showNotification(message) {
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <span class="notification-icon">${message.split(' ')[0]}</span>
+                <span>${message.substring(message.indexOf(' ') + 1)}</span>
+            `;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.classList.add('show'), 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.productsPage = new ProductsPage();
+            }, 100);
+        });
+    </script>
+</body>
+</html>
